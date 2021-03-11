@@ -1,10 +1,18 @@
 import {openPopup, closePopup} from './utils.js';
+import {ESCAPE} from './constants.js';
 
 let templatePicture = document.querySelector('#picture').content.querySelector('a');
 let picturesContainer = document.querySelector('.pictures');
 let picturePopup = document.querySelector('.big-picture');
 
+let deleteComments = () => {
+  let comments = document.querySelectorAll('.social__comment');
+  comments.forEach(comment => comment.remove());
+};
+
 let addPictures = (data) => {
+
+  // Добавляем миниатюры фото на страницу
   data.forEach((pic) => {
     let newPicture = templatePicture.cloneNode(true);
     let picture = newPicture.querySelector('.picture__img');
@@ -20,6 +28,7 @@ let addPictures = (data) => {
 
     let closeButton = picturePopup.querySelector('.cancel');
 
+    // Открытие попапа с фото
     newPicture.addEventListener('click', (evt) => {
       evt.preventDefault();
 
@@ -65,15 +74,13 @@ let addPictures = (data) => {
       closeButton.addEventListener('click', (evt) => {
         evt.preventDefault();
         closePopup(picturePopup)
-        let comments = commentsList.querySelectorAll('li');
-        comments.forEach(comment => comment.remove());
+        deleteComments();
       });
 
       document.addEventListener('keydown', (evt) => {
-        if (evt.keyCode === 27) {
+        if (evt.keyCode === ESCAPE) {
           closePopup(picturePopup);
-          let comments = commentsList.querySelectorAll('li');
-          comments.forEach(comment => comment.remove());
+          deleteComments();
         }
       })
     })
