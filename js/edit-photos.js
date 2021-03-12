@@ -36,12 +36,17 @@ plusScaleButton.addEventListener('click', () => {
 let sliderContainer = document.querySelector('.effect-level__slider');
 
 // Фото-фильтры
+const WORD_LENGTH = 6;
+const SLIDER_DEFAULT_MIN = 0;
+const SLIDER_DEFAULT_MAX = 100;
+const SLIDER_DEFAULT_START = 100;
+const SLIDER_DEFAULT_STEP = 1;
 
 let photoFilters = document.querySelectorAll('.effects__radio');
 
 let addFilter = (id, minFilterValue, maxFilterValue, filterStep, filterStart, styleFilterName, unit) => {
   photoPreview.className = '';
-  let filterName = id.slice(6);
+  let filterName = id.slice(WORD_LENGTH);
   let className = `effects__preview-${filterName}`;
   photoPreview.classList.add(className);
 
@@ -75,11 +80,11 @@ photoFilters.forEach((filter) => {
     if (!document.querySelector('.noUi-target')) {
       noUiSlider.create(sliderContainer, {
         range: {
-          min: 0,
-          max: 100,
+          min: SLIDER_DEFAULT_MIN,
+          max: SLIDER_DEFAULT_MAX,
         },
-        start: 50,
-        step: 1,
+        start: SLIDER_DEFAULT_START,
+        step: SLIDER_DEFAULT_STEP,
         connect: 'lower',
       });
     }
