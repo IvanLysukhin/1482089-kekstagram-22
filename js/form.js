@@ -1,6 +1,6 @@
 import {openPopup, closePopup} from './utils.js';
 import {ESCAPE, defaultScale} from './constants.js';
-import {changeScale} from './edit-photos.js';
+import {changeScale, clearFilters} from './edit-photos.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
 let editForm = document.querySelector('.img-upload__form')
@@ -23,11 +23,13 @@ cancelButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   closePopup(formPopup);
   resetForm();
+  clearFilters();
 });
 
 document.addEventListener('keydown', (evt) => {
   if (evt.keyCode === ESCAPE) {
     closePopup(formPopup);
     resetForm();
+    clearFilters();
   }
 });
