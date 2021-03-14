@@ -1,5 +1,5 @@
 import {openPopup, closePopup} from './utils.js';
-import {ESCAPE, defaultScale} from './constants.js';
+import {ESCAPE, DEFAULT_SCALE, MIN_HASHTAG_LENGTH, MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT} from './constants.js';
 import {changeScale, clearFilters} from './edit-photos.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
@@ -15,7 +15,7 @@ uploadInput.addEventListener('change', (evt)=> {
   evt.preventDefault();
   openPopup(formPopup);
 
-  changeScale(defaultScale);
+  changeScale(DEFAULT_SCALE);
 });
 
 
@@ -40,9 +40,8 @@ document.addEventListener('keydown', (evt) => {
 let hashtagsInput = document.querySelector('.text__hashtags');
 // let descriptionInput = document.querySelector('.text__description');
 
-let space = new RegExp('\\s+');
-let regHashtag = new RegExp('\\w');
-
+const SPACE = new RegExp('\\s+');
+const WORD_SYMBOLS = new RegExp('\\w');
 
 let checkSharp = (array) => {
   return array.some((hashtag) => {return hashtag[0] !== '#';})
@@ -51,7 +50,7 @@ let checkSharp = (array) => {
 let checkSymbols = (array) => {
   return array.some((hashtag) => {
     for (let i = 1; i < hashtag.length; i++) {
-      if (hashtag[i].search(regHashtag) === -1) {
+      if (hashtag[i].search(WORD_SYMBOLS) === -1) {
         return true;
       }
     }
@@ -59,11 +58,11 @@ let checkSymbols = (array) => {
 };
 
 let checkMinLength = (array) => {
-  return array.some((hashtag) => {return hashtag.length < 2})
+  return array.some((hashtag) => {return hashtag.length < MIN_HASHTAG_LENGTH})
 };
 
 let checkMaxLength = (array) => {
-  return array.some((hashtag) => {return hashtag.length > 20})
+  return array.some((hashtag) => {return hashtag.length > MAX_HASHTAG_LENGTH})
 };
 
 let checkUniq = (array) => {
@@ -76,7 +75,7 @@ let checkUniq = (array) => {
 };
 
 hashtagsInput.addEventListener('input', () => {
-  let hashtagsArray = hashtagsInput.value.split(space);
+  let hashtagsArray = hashtagsInput.value.split(SPACE);
 
   if (checkSharp(hashtagsArray)) {
     hashtagsInput.setCustomValidity('Хэш-тег должен начинать с #');
@@ -86,7 +85,7 @@ hashtagsInput.addEventListener('input', () => {
     hashtagsInput.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
   } else if (checkMaxLength(hashtagsArray)) {
     hashtagsInput.setCustomValidity('Максимальная длина одного хэш-тега 20 символов');
-  } else if (hashtagsArray.length > 5) {
+  } else if (hashtagsArray.length > MAX_HASHTAG_COUNT) {
     hashtagsInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
   } else if (checkUniq(hashtagsArray))  {
     hashtagsInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
