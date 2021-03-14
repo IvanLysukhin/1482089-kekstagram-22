@@ -31,7 +31,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" action="https://22.javascript.pages.academy/kekstagram" method="post" enctype="multipart/form-data" autocomplete="off">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -40,7 +40,7 @@
             </fieldset>
 
             <!-- Форма редактирования изображения -->
-            <div class="img-upload__overlay hidden">
+            <div class="img-upload__overlay">
               <div class="img-upload__wrapper">
                 <div class="img-upload__preview-container">
 
@@ -58,10 +58,9 @@
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
                   <fieldset class="img-upload__effect-level  effect-level">
-                    <input class="effect-level__value" type="number" name="effect-level" value="">
+                    <input class="effect-level__value" type="number" name="effect-level" value="" step="any">
                     <div class="effect-level__slider"></div>
                   </fieldset>
-
                   <!-- Кнопка для закрытия формы редактирования изображения -->
                   <button type="reset" class="img-upload__cancel  cancel" id="upload-cancel">Закрыть</button>
                 </div>

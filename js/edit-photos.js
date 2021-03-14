@@ -43,6 +43,7 @@ const SLIDER_DEFAULT_START = 100;
 const SLIDER_DEFAULT_STEP = 1;
 
 let photoFilters = document.querySelectorAll('.effects__radio');
+let effectValueInput = document.querySelector('.effect-level__value');
 
 let addFilter = (id, minFilterValue, maxFilterValue, filterStep, filterStart, styleFilterName, unit) => {
   photoPreview.className = '';
@@ -61,6 +62,7 @@ let addFilter = (id, minFilterValue, maxFilterValue, filterStep, filterStart, st
 
   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
     let value = unencoded[handle];
+    effectValueInput.value = sliderContainer.noUiSlider.get();
     photoPreview.style.filter = `${styleFilterName}(${value}${unit})`;
   });
 };
