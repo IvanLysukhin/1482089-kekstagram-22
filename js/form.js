@@ -1,6 +1,7 @@
-import {openPopup, closePopup} from './utils.js';
+import {openPopup, closePopup, openMessage} from './utils.js';
 import {ESCAPE, DEFAULT_SCALE, MIN_HASHTAG_LENGTH, MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT, MAX_DESCRIPTION_LENGTH} from './constants.js';
 import {changeScale, clearFilters} from './edit-photos.js';
+import {sendData} from './data.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
 let editForm = document.querySelector('.img-upload__form')
@@ -21,19 +22,21 @@ uploadInput.addEventListener('change', (evt)=> {
   changeScale(DEFAULT_SCALE);
 });
 
-
-cancelButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+let closeFormPopup = () => {
   closePopup(formPopup);
   resetForm();
   clearFilters();
+};
+
+
+cancelButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  closeFormPopup();
 });
 
 document.addEventListener('keydown', (evt) => {
   if (evt.keyCode === ESCAPE && hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
-    closePopup(formPopup);
-    resetForm();
-    clearFilters();
+    closeFormPopup();
   }
 });
 
@@ -103,3 +106,21 @@ descriptionInput.addEventListener('input', () => {
 
   descriptionInput.reportValidity();
 });
+
+let onSuccess = () => {
+  closeFormPopup();
+  openMessage('success');
+}
+let onError = () => {
+  openMessage('error');
+  editForm.style.zIndex = '1';
+}
+
+editForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  let formData = new FormData(editForm);
+
+  sendData(formData)
+    .then(onSuccess)
+    .catch(onError)
+})
