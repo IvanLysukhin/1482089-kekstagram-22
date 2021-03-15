@@ -1,11 +1,14 @@
 import {openPopup, closePopup} from './utils.js';
-import {ESCAPE, DEFAULT_SCALE, MIN_HASHTAG_LENGTH, MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT} from './constants.js';
+import {ESCAPE, DEFAULT_SCALE, MIN_HASHTAG_LENGTH, MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT, MAX_DESCRIPTION_LENGTH} from './constants.js';
 import {changeScale, clearFilters} from './edit-photos.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
 let editForm = document.querySelector('.img-upload__form')
 let cancelButton = formPopup.querySelector('#upload-cancel');
 let uploadInput = document.querySelector('#upload-file');
+
+let hashtagsInput = document.querySelector('.text__hashtags');
+let descriptionInput = document.querySelector('.text__description');
 
 let resetForm = () => {
   editForm.reset();
@@ -27,7 +30,7 @@ cancelButton.addEventListener('click', (evt) => {
 });
 
 document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === ESCAPE) {
+  if (evt.keyCode === ESCAPE && hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
     closePopup(formPopup);
     resetForm();
     clearFilters();
@@ -36,9 +39,6 @@ document.addEventListener('keydown', (evt) => {
 
 
 // Валидация формы
-
-let hashtagsInput = document.querySelector('.text__hashtags');
-// let descriptionInput = document.querySelector('.text__description');
 
 const SPACE = new RegExp('\\s+');
 const WORD_SYMBOLS = new RegExp('\\w');
@@ -92,4 +92,14 @@ hashtagsInput.addEventListener('input', () => {
   } else (hashtagsInput.setCustomValidity(''));
 
   hashtagsInput.reportValidity();
+});
+
+descriptionInput.addEventListener('input', () => {
+  if(descriptionInput.value.length > MAX_DESCRIPTION_LENGTH) {
+    descriptionInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+  } else {
+    descriptionInput.setCustomValidity('');
+  }
+
+  descriptionInput.reportValidity();
 });
