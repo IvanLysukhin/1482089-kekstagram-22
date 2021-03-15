@@ -8,6 +8,10 @@ let getData = (onSuccess) => {
     .then((data) => {
       onSuccess(data);
     })
+    .then(()=>{
+      let filtersContainer = document.querySelector('.img-filters');
+      filtersContainer.classList.remove('img-filters--inactive');
+    })
     .catch(openErrorDataPopup)
 }
 
