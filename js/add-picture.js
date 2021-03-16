@@ -104,6 +104,21 @@ let addPictures = (data) => {
 
       addComments(commentsArray);
 
+      let commentNumber =  parseInt(commentsContainer.textContent);
+
+      addCommentsButton.addEventListener('click', () => {
+        let commentItemsNumber = picturePopup.querySelectorAll('.social__comment');
+
+        commentNumber += 5;
+
+        if (commentItemsNumber.length === pic.comments.length) {
+          commentNumber = pic.comments.length;
+        }
+
+        commentsContainer.textContent= `${commentNumber}`;
+      })
+
+
       let bigDescription = picturePopup.querySelector('.social__caption');
       bigDescription.textContent = pic.description;
 
