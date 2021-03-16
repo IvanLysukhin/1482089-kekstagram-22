@@ -4,6 +4,8 @@ import {ESCAPE} from './constants.js';
 let templatePicture = document.querySelector('#picture').content.querySelector('a');
 let picturesContainer = document.querySelector('.pictures');
 let picturePopup = document.querySelector('.big-picture');
+let commentsContainer = picturePopup.querySelector('.comments-count--show');
+let addCommentsButton = document.querySelector('.comments-loader');
 
 let deleteComments = () => {
   let comments = document.querySelectorAll('.social__comment');
@@ -35,10 +37,25 @@ let createComments = (array) => {
   })
 };
 
+let checkCommentsArrayLength = (array) => {
+  if (array.length <= 5) {
+    commentsContainer.textContent = array.length;
+    addCommentsButton.classList.add('hidden')
+  } else {
+    addCommentsButton.classList.remove('hidden');
+  }
+};
+
 let addComments = (array) => {
-  let addCommentsButton = document.querySelector('.comments-loader');
+
   addCommentsButton.addEventListener('click', () => {
     let copyPhotoArray = array.splice(0,5);
+    if (copyPhotoArray.length < 5) {
+      addCommentsButton.classList.add('hidden')
+    } else {
+      addCommentsButton.classList.remove('hidden');
+    }
+
     createComments(copyPhotoArray);
   });
 };
@@ -73,10 +90,13 @@ let addPictures = (data) => {
       let bigLikes = picturePopup.querySelector('.likes-count');
       bigLikes.textContent = pic.likes;
 
-      let bigComments = picturePopup.querySelector('.comments-count');
+      let bigComments = picturePopup.querySelector('.comments-count--all');
+      commentsContainer.textContent = '5';
       bigComments.textContent = pic.comments.length;
 
       // Комментарии
+
+      checkCommentsArrayLength(pic.comments);
 
       let commentsArray = pic.comments.slice();
 
