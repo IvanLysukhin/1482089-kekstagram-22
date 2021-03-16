@@ -10,6 +10,31 @@ let deleteComments = () => {
   comments.forEach(comment => comment.remove());
 };
 
+let createComments = (array) => {
+  let commentsList = picturePopup.querySelector('.social__comments');
+  array.forEach((comment) => {
+    let newComment = document.createElement('li');
+    newComment.classList.add('social__comment')
+
+    let newCommentPic = document.createElement('img');
+    newCommentPic.classList.add('social__picture');
+    newCommentPic.style.width = '35px';
+    newCommentPic.style.height = '35px';
+    newComment.appendChild(newCommentPic);
+
+    let newCommentText = document.createElement('p');
+    newCommentText.classList.add('social__text');
+    newComment.appendChild(newCommentText);
+
+    newCommentPic.src = comment.avatar;
+    newCommentPic.alt = comment.name;
+
+    newCommentText.textContent = comment.message;
+
+    commentsList.appendChild(newComment);
+  })
+}
+
 let addPictures = (data) => {
 
   // Добавляем миниатюры фото на страницу
@@ -44,29 +69,30 @@ let addPictures = (data) => {
       bigComments.textContent = pic.comments.length;
 
       // Комментарии
-      let commentsList = picturePopup.querySelector('.social__comments');
 
-      pic.comments.forEach((comment) => {
-        let newComment = document.createElement('li');
-        newComment.classList.add('social__comment')
+      let commentsArray = pic.comments.slice();
+      let firstComment = 0;
+      let lastComment = 5;
+      let step = 5;
 
-        let newCommentPic = document.createElement('img');
-        newCommentPic.classList.add('social__picture');
-        newCommentPic.style.width = '35px';
-        newCommentPic.style.height = '35px';
-        newComment.appendChild(newCommentPic);
+      createComments(commentsArray.slice(firstComment, lastComment));
 
-        let newCommentText = document.createElement('p');
-        newCommentText.classList.add('social__text');
-        newComment.appendChild(newCommentText);
+      let addCommentsButton = document.querySelector('.comments-loader');
 
-        newCommentPic.src = comment.avatar;
-        newCommentPic.alt = comment.name;
+      addCommentsButton.addEventListener('click', () => {
 
-        newCommentText.textContent = comment.message;
+        firstComment += step;
+        lastComment += step;
 
-        commentsList.appendChild(newComment);
-      })
+        let copyPhotoArray = commentsArray.slice(firstComment,lastComment);
+
+        if (lastComment > commentsArray.length) {
+          deleteComments();
+          copyPhotoArray = commentsArray;
+        }
+
+        createComments(copyPhotoArray);
+      });
 
       let bigDescription = picturePopup.querySelector('.social__caption');
       bigDescription.textContent = pic.description;
@@ -75,12 +101,16 @@ let addPictures = (data) => {
         evt.preventDefault();
         closePopup(picturePopup)
         deleteComments();
+        firstComment = 0;
+        lastComment = 5;
       });
 
       document.addEventListener('keydown', (evt) => {
         if (evt.keyCode === ESCAPE) {
           closePopup(picturePopup);
           deleteComments();
+          firstComment = 0;
+          lastComment = 5;
         }
       })
     })
