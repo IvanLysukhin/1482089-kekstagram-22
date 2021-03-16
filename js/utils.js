@@ -1,3 +1,5 @@
+import {ERROR_DELAY, ESCAPE} from './constants.js';
+
 let pageBody = document.querySelector('body');
 
 let openPopup = (popup) => {
@@ -10,4 +12,51 @@ let closePopup = (popup) => {
   pageBody.classList.remove('modal-open');
 };
 
-export {openPopup, closePopup}
+let openErrorDataPopup = () => {
+  let errorPopup = document.createElement('div');
+  errorPopup.style.height = '50px';
+  errorPopup.style.textAlign = 'center';
+  errorPopup.style.backgroundColor = '#ffaa99';
+  errorPopup.style.position = 'fixed';
+  errorPopup.style.padding = '10px';
+  errorPopup.style.fontSize = '20px';
+  errorPopup.style.top = '0';
+  errorPopup.style.right = '0';
+  errorPopup.style.left = '0';
+  errorPopup.style.color = '#232321';
+  errorPopup.textContent = 'Ошибка загрузки данных с сервера';
+
+  document.body.appendChild(errorPopup);
+
+  setTimeout(() => {
+    errorPopup.remove();
+  }, ERROR_DELAY)
+}
+
+let openMessage = (type) => {
+  let mainContainer = document.querySelector('main');
+  let messageTemplate = document.querySelector(`#${type}`).content.querySelector('section');
+  let message = messageTemplate.cloneNode(true);
+
+  let closeButton = message.querySelector('button');
+
+  closeButton.addEventListener('click', () => {
+    message.remove();
+  });
+
+  mainContainer.addEventListener('click', (evt) => {
+    if (evt.target === message) {
+      message.remove();
+    }
+  })
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === ESCAPE) {
+      message.remove();
+    }
+  })
+
+  mainContainer.appendChild(message);
+};
+
+export {openPopup, closePopup, openErrorDataPopup, openMessage}

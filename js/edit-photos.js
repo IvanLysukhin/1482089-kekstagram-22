@@ -1,5 +1,5 @@
 /* global noUiSlider:readonly */
-import {minScale, maxScale, minScaleStep, maxScaleStep} from './constants.js';
+import {MIN_SCALE, MAX_SCALE, MIN_SCALE_STEP, MAX_SCALE_STEP} from './constants.js';
 
 let minusScaleButton = document.querySelector('.scale__control--smaller');
 let plusScaleButton = document.querySelector('.scale__control--bigger');
@@ -16,7 +16,7 @@ let changeScale = (value) => {
 minusScaleButton.addEventListener('click', () => {
   let scaleValue = parseInt(scaleInput.value);
 
-  scaleValue <= minScale ? scaleStep = minScaleStep : scaleStep = maxScaleStep;
+  scaleValue <= MIN_SCALE ? scaleStep = MIN_SCALE_STEP : scaleStep = MAX_SCALE_STEP;
 
   scaleValue -= scaleStep;
 
@@ -26,7 +26,7 @@ minusScaleButton.addEventListener('click', () => {
 plusScaleButton.addEventListener('click', () => {
   let scaleValue = parseInt(scaleInput.value);
 
-  scaleValue >= maxScale ? scaleStep = minScaleStep : scaleStep = maxScaleStep;
+  scaleValue >= MAX_SCALE ? scaleStep = MIN_SCALE_STEP : scaleStep = MAX_SCALE_STEP;
 
   scaleValue += scaleStep;
 
@@ -43,6 +43,7 @@ const SLIDER_DEFAULT_START = 100;
 const SLIDER_DEFAULT_STEP = 1;
 
 let photoFilters = document.querySelectorAll('.effects__radio');
+let effectValueInput = document.querySelector('.effect-level__value');
 
 let addFilter = (id, minFilterValue, maxFilterValue, filterStep, filterStart, styleFilterName, unit) => {
   photoPreview.className = '';
@@ -61,6 +62,7 @@ let addFilter = (id, minFilterValue, maxFilterValue, filterStep, filterStart, st
 
   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
     let value = unencoded[handle];
+    effectValueInput.value = sliderContainer.noUiSlider.get();
     photoPreview.style.filter = `${styleFilterName}(${value}${unit})`;
   });
 };

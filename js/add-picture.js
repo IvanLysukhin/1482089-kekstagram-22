@@ -10,6 +10,39 @@ let deleteComments = () => {
   comments.forEach(comment => comment.remove());
 };
 
+let createComments = (array) => {
+  let commentsList = picturePopup.querySelector('.social__comments');
+  array.forEach((comment) => {
+    let newComment = document.createElement('li');
+    newComment.classList.add('social__comment')
+
+    let newCommentPic = document.createElement('img');
+    newCommentPic.classList.add('social__picture');
+    newCommentPic.style.width = '35px';
+    newCommentPic.style.height = '35px';
+    newComment.appendChild(newCommentPic);
+
+    let newCommentText = document.createElement('p');
+    newCommentText.classList.add('social__text');
+    newComment.appendChild(newCommentText);
+
+    newCommentPic.src = comment.avatar;
+    newCommentPic.alt = comment.name;
+
+    newCommentText.textContent = comment.message;
+
+    commentsList.appendChild(newComment);
+  })
+};
+
+let addComments = (array) => {
+  let addCommentsButton = document.querySelector('.comments-loader');
+  addCommentsButton.addEventListener('click', () => {
+    let copyPhotoArray = array.splice(0,5);
+    createComments(copyPhotoArray);
+  });
+};
+
 let addPictures = (data) => {
 
   // Добавляем миниатюры фото на страницу
@@ -44,29 +77,12 @@ let addPictures = (data) => {
       bigComments.textContent = pic.comments.length;
 
       // Комментарии
-      let commentsList = picturePopup.querySelector('.social__comments');
 
-      pic.comments.forEach((comment) => {
-        let newComment = document.createElement('li');
-        newComment.classList.add('social__comment')
+      let commentsArray = pic.comments.slice();
 
-        let newCommentPic = document.createElement('img');
-        newCommentPic.classList.add('social__picture');
-        newCommentPic.style.width = '35px';
-        newCommentPic.style.height = '35px';
-        newComment.appendChild(newCommentPic);
+      createComments(commentsArray.splice(0, 5));
 
-        let newCommentText = document.createElement('p');
-        newCommentText.classList.add('social__text');
-        newComment.appendChild(newCommentText);
-
-        newCommentPic.src = comment.avatar;
-        newCommentPic.alt = comment.name;
-
-        newCommentText.textContent = comment.message;
-
-        commentsList.appendChild(newComment);
-      })
+      addComments(commentsArray);
 
       let bigDescription = picturePopup.querySelector('.social__caption');
       bigDescription.textContent = pic.description;
