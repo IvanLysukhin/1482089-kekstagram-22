@@ -33,7 +33,15 @@ let createComments = (array) => {
 
     commentsList.appendChild(newComment);
   })
-}
+};
+
+let addComments = (array) => {
+  let addCommentsButton = document.querySelector('.comments-loader');
+  addCommentsButton.addEventListener('click', () => {
+    let copyPhotoArray = array.splice(0,5);
+    createComments(copyPhotoArray);
+  });
+};
 
 let addPictures = (data) => {
 
@@ -71,28 +79,10 @@ let addPictures = (data) => {
       // Комментарии
 
       let commentsArray = pic.comments.slice();
-      let firstComment = 0;
-      let lastComment = 5;
-      let step = 5;
 
-      createComments(commentsArray.slice(firstComment, lastComment));
+      createComments(commentsArray.splice(0, 5));
 
-      let addCommentsButton = document.querySelector('.comments-loader');
-
-      addCommentsButton.addEventListener('click', () => {
-
-        firstComment += step;
-        lastComment += step;
-
-        let copyPhotoArray = commentsArray.slice(firstComment,lastComment);
-
-        if (lastComment > commentsArray.length) {
-          deleteComments();
-          copyPhotoArray = commentsArray;
-        }
-
-        createComments(copyPhotoArray);
-      });
+      addComments(commentsArray);
 
       let bigDescription = picturePopup.querySelector('.social__caption');
       bigDescription.textContent = pic.description;
@@ -101,16 +91,12 @@ let addPictures = (data) => {
         evt.preventDefault();
         closePopup(picturePopup)
         deleteComments();
-        firstComment = 0;
-        lastComment = 5;
       });
 
       document.addEventListener('keydown', (evt) => {
         if (evt.keyCode === ESCAPE) {
           closePopup(picturePopup);
           deleteComments();
-          firstComment = 0;
-          lastComment = 5;
         }
       })
     })
