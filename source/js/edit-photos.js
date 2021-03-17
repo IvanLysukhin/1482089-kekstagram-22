@@ -1,5 +1,13 @@
 /* global noUiSlider:readonly */
-import {MIN_SCALE, MAX_SCALE, MIN_SCALE_STEP, MAX_SCALE_STEP} from './constants.js';
+import {MIN_SCALE,
+  MAX_SCALE,
+  MIN_SCALE_STEP,
+  MAX_SCALE_STEP,
+  WORD_LENGTH,
+  SLIDER_DEFAULT_MIN,
+  SLIDER_DEFAULT_MAX,
+  SLIDER_DEFAULT_START,
+  SLIDER_DEFAULT_STEP} from './constants.js';
 
 let minusScaleButton = document.querySelector('.scale__control--smaller');
 let plusScaleButton = document.querySelector('.scale__control--bigger');
@@ -36,11 +44,6 @@ plusScaleButton.addEventListener('click', () => {
 let sliderContainer = document.querySelector('.effect-level__slider');
 
 // Фото-фильтры
-const WORD_LENGTH = 6;
-const SLIDER_DEFAULT_MIN = 0;
-const SLIDER_DEFAULT_MAX = 100;
-const SLIDER_DEFAULT_START = 100;
-const SLIDER_DEFAULT_STEP = 1;
 
 let photoFilters = document.querySelectorAll('.effects__radio');
 let effectValueInput = document.querySelector('.effect-level__value');
@@ -109,101 +112,3 @@ photoFilters.forEach((filter) => {
 })
 
 export {changeScale, clearFilters};
-
-
-
-// Оставил пока здесь изначальный функции
-
-// let addChromeFilter = () => {
-//   photoPreview.className = '';
-//   photoPreview.classList.add('effects__preview--chrome');
-//
-//   sliderContainer.noUiSlider.updateOptions({
-//     range: {
-//       min:0,
-//       max: 1,
-//     },
-//     step: 0.1,
-//     start: 0.5,
-//   });
-//
-//   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
-//     let value = unencoded[handle];
-//     photoPreview.style.filter = `grayscale(${value})`;
-//   });
-// };
-//
-// let addSepiaFilter = () => {
-//   photoPreview.className = '';
-//   photoPreview.classList.add('effects__preview--sepia');
-//
-//   sliderContainer.noUiSlider.updateOptions({
-//     range: {
-//       min:0,
-//       max: 1,
-//     },
-//     step: 0.1,
-//     start: 0.5,
-//   });
-//
-//   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
-//     let value = unencoded[handle];
-//     photoPreview.style.filter = `sepia(${value})`;
-//   });
-// };
-//
-// let addMarvinFilter = () => {
-//   photoPreview.className = '';
-//   photoPreview.classList.add('effects__preview--marvin');
-//
-//   sliderContainer.noUiSlider.updateOptions({
-//     range: {
-//       min:0,
-//       max: 100,
-//     },
-//     step: 1,
-//     start: 100,
-//   });
-//
-//   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
-//     let value = unencoded[handle];
-//     photoPreview.style.filter = `invert(${value}%)`;
-//   });
-// };
-//
-// let addPhobosFilter = () => {
-//   photoPreview.className = '';
-//   photoPreview.classList.add('effects__preview--phobos');
-//
-//   sliderContainer.noUiSlider.updateOptions({
-//     range: {
-//       min:0,
-//       max: 3,
-//     },
-//     step: 0.1,
-//     start: 2,
-//   });
-//
-//   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
-//     let value = unencoded[handle]; // .00000004 поправить!
-//     photoPreview.style.filter = `blur(${value}px)`;
-//   });
-// };
-//
-// let addHeatFilter = () => {
-//   photoPreview.className = '';
-//   photoPreview.classList.add('effects__preview--heat');
-//
-//   sliderContainer.noUiSlider.updateOptions({
-//     range: {
-//       min:1,
-//       max: 3,
-//     },
-//     step: 0.1,
-//   });
-//
-//   sliderContainer.noUiSlider.on('update', (_, handle, unencoded) => {
-//     let value = unencoded[handle];
-//     photoPreview.style.filter = `brightness(${value})`;
-//   });
-// };

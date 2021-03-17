@@ -1,5 +1,5 @@
 import {openPopup, closePopup} from './utils.js';
-import {ESCAPE} from './constants.js';
+import {ESCAPE, COMMENTS_ARRAY_LENGTH_LIMITER, ADD_COMMENTS_STEP} from './constants.js';
 
 let templatePicture = document.querySelector('#picture').content.querySelector('a');
 let picturesContainer = document.querySelector('.pictures');
@@ -38,7 +38,7 @@ let createComments = (array) => {
 };
 
 let checkCommentsArrayLength = (array) => {
-  if (array.length <= 5) {
+  if (array.length <= COMMENTS_ARRAY_LENGTH_LIMITER) {
     commentsContainer.textContent = array.length;
     addCommentsButton.classList.add('hidden')
   } else {
@@ -49,8 +49,8 @@ let checkCommentsArrayLength = (array) => {
 let addComments = (array) => {
 
   addCommentsButton.addEventListener('click', () => {
-    let copyPhotoArray = array.splice(0,5);
-    if (copyPhotoArray.length < 5) {
+    let copyPhotoArray = array.splice(0, 5);
+    if (copyPhotoArray.length < COMMENTS_ARRAY_LENGTH_LIMITER) {
       addCommentsButton.classList.add('hidden')
     } else {
       addCommentsButton.classList.remove('hidden');
@@ -109,7 +109,7 @@ let addPictures = (data) => {
       addCommentsButton.addEventListener('click', () => {
         let commentItemsNumber = picturePopup.querySelectorAll('.social__comment');
 
-        commentNumber += 5;
+        commentNumber += ADD_COMMENTS_STEP;
 
         if (commentItemsNumber.length === pic.comments.length) {
           commentNumber = pic.comments.length;
