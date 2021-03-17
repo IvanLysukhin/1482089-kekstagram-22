@@ -6,6 +6,7 @@ let getData = (onSuccess) => {
       return response.json()
     })
     .then((data) => {
+      console.log(data)
       onSuccess(data);
     })
     .then(()=>{
