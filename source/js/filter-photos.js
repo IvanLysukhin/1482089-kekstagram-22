@@ -22,7 +22,7 @@ let getRandomPhotos = (array) => {
 
 let sortPhotosByComments = (array) => {
   clearPictures();
-  let sortedPhotos = array.sort((a, b) => {return a.comments.length < b.comments.length});
+  let sortedPhotos = array.sort((a, b) => {return b.comments.length - a.comments.length});
 
   addPictures(sortedPhotos);
 };

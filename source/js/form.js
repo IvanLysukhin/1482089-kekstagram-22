@@ -2,6 +2,7 @@ import {openPopup, closePopup, openMessage} from './utils.js';
 import {ESCAPE, DEFAULT_SCALE, MIN_HASHTAG_LENGTH, MAX_HASHTAG_LENGTH, MAX_HASHTAG_COUNT, MAX_DESCRIPTION_LENGTH} from './constants.js';
 import {changeScale, clearFilters} from './edit-photos.js';
 import {sendData} from './data.js';
+import {uploadUserPhoto, setDefaultPhoto} from './upload-photo.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
 let editForm = document.querySelector('.img-upload__form')
@@ -18,7 +19,7 @@ let resetForm = () => {
 uploadInput.addEventListener('change', (evt)=> {
   evt.preventDefault();
   openPopup(formPopup);
-
+  uploadUserPhoto(evt.target);
   changeScale(DEFAULT_SCALE);
 });
 
@@ -26,6 +27,7 @@ let closeFormPopup = () => {
   closePopup(formPopup);
   resetForm();
   clearFilters();
+  setDefaultPhoto();
 };
 
 

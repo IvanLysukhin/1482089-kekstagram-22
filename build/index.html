@@ -35,7 +35,7 @@
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
-              <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" required>
+              <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" accept="image/jpeg, image/png" required>
               <label for="upload-file" class="img-upload__label  img-upload__control">Загрузить</label>
             </fieldset>
 
@@ -150,7 +150,7 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"><span class="comments-count comments-count--show">5</span> из <span class="comments-count comments-count--all">125</span> комментариев</div>
           <ul class="social__comments">
             <!--
               <li class="social__comment">
@@ -232,7 +232,7 @@
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
-  <script src="js/main.js" type="module" defer></script>
+  <script src="js/main.bundle.js"></script>
   <script src="nouislider/nouislider.js"></script>
 </body>
 </html>
