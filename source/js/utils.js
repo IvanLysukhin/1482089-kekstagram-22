@@ -47,7 +47,8 @@ let openMessage = (type) => {
   let closeMessageOnClick = (evt) => {
     if (evt.target === message) {
       message.remove();
-      mainContainer.removeEventListener('click', closeMessageOnClick)
+      mainContainer.removeEventListener('click', closeMessageOnClick);
+      document.removeEventListener('keydown', closeMessageOnEscape);
     }
   };
 
@@ -56,7 +57,8 @@ let openMessage = (type) => {
   let closeMessageOnEscape = (evt) => {
     if (evt.keyCode === ESCAPE) {
       message.remove();
-      document.removeEventListener('keydown', closeMessageOnEscape)
+      document.removeEventListener('keydown', closeMessageOnEscape);
+      mainContainer.removeEventListener('click', closeMessageOnClick);
     }
   };
 

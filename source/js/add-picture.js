@@ -132,8 +132,9 @@ let addPictures = (data) => {
 
       closeButton.addEventListener('click', (evt) => {
         evt.preventDefault();
-        closePopup(picturePopup)
+        closePopup(picturePopup);
         deleteComments();
+        document.removeEventListener('keydown', closePreviewOnEscape);
       });
 
       document.addEventListener('keydown', closePreviewOnEscape)
