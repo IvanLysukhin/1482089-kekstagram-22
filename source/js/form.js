@@ -5,7 +5,7 @@ import {sendData} from './data.js';
 import {uploadUserPhoto, setDefaultPhoto} from './upload-photo.js';
 
 let formPopup = document.querySelector('.img-upload__overlay');
-let editForm = document.querySelector('.img-upload__form')
+let editForm = document.querySelector('.img-upload__form');
 let cancelButton = formPopup.querySelector('#upload-cancel');
 let uploadInput = document.querySelector('#upload-file');
 
@@ -14,34 +14,7 @@ let descriptionInput = document.querySelector('.text__description');
 
 let resetForm = () => {
   editForm.reset();
-}
-
-uploadInput.addEventListener('change', (evt)=> {
-  evt.preventDefault();
-  openPopup(formPopup);
-  uploadUserPhoto(evt.target);
-  changeScale(DEFAULT_SCALE);
-});
-
-let closeFormPopup = () => {
-  closePopup(formPopup);
-  resetForm();
-  clearFilters();
-  setDefaultPhoto();
 };
-
-
-cancelButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  closeFormPopup();
-});
-
-document.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === ESCAPE && hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
-    closeFormPopup();
-  }
-});
-
 
 // Валидация формы
 
@@ -49,7 +22,7 @@ const SPACE = new RegExp('\\s+');
 const WORD_SYMBOLS = new RegExp('\\w');
 
 let checkSharp = (array) => {
-  return array.some((hashtag) => {return hashtag[0] !== '#';})
+  return array.some((hashtag) => {return hashtag[0] !== '#'});
 };
 
 let checkSymbols = (array) => {
@@ -79,7 +52,17 @@ let checkUniq = (array) => {
   }
 };
 
-hashtagsInput.addEventListener('input', () => {
+let checkCommentLength = () => {
+  if(descriptionInput.value.length > MAX_DESCRIPTION_LENGTH) {
+    descriptionInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+  } else {
+    descriptionInput.setCustomValidity('');
+  }
+
+  descriptionInput.reportValidity();
+};
+
+let checkHashTags = () => {
   let hashtagsArray = hashtagsInput.value.split(SPACE);
 
   if (checkSharp(hashtagsArray)) {
@@ -94,19 +77,48 @@ hashtagsInput.addEventListener('input', () => {
     hashtagsInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
   } else if (checkUniq(hashtagsArray))  {
     hashtagsInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
-  } else (hashtagsInput.setCustomValidity(''));
-
-  hashtagsInput.reportValidity();
-});
-
-descriptionInput.addEventListener('input', () => {
-  if(descriptionInput.value.length > MAX_DESCRIPTION_LENGTH) {
-    descriptionInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
   } else {
-    descriptionInput.setCustomValidity('');
+    hashtagsInput.setCustomValidity('')
   }
 
-  descriptionInput.reportValidity();
+  hashtagsInput.reportValidity();
+};
+
+let closePopupCancelButton = (evt) => {
+  evt.preventDefault();
+  closeFormPopup();
+}
+
+let closePopupEscape = (evt) => {
+  if (evt.keyCode === ESCAPE && hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
+    closeFormPopup();
+  }
+};
+
+let closeFormPopup = () => {
+  closePopup(formPopup);
+  resetForm();
+  clearFilters();
+  setDefaultPhoto();
+
+  hashtagsInput.removeEventListener('input', checkHashTags);
+  descriptionInput.removeEventListener('input', checkCommentLength);
+
+  cancelButton.removeEventListener('click', closePopupCancelButton);
+  document.removeEventListener('keydown', closePopupEscape);
+};
+
+uploadInput.addEventListener('change', (evt)=> {
+  evt.preventDefault();
+  openPopup(formPopup);
+  uploadUserPhoto(evt.target);
+  changeScale(DEFAULT_SCALE);
+
+  hashtagsInput.addEventListener('input', checkHashTags);
+  descriptionInput.addEventListener('input', checkCommentLength);
+
+  cancelButton.addEventListener('click', closePopupCancelButton);
+  document.addEventListener('keydown', closePopupEscape);
 });
 
 let onSuccess = () => {
