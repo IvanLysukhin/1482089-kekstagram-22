@@ -46,6 +46,14 @@ let checkCommentsArrayLength = (array) => {
   }
 };
 
+let closePreviewOnEscape = (evt) => {
+  if (evt.keyCode === ESCAPE) {
+    closePopup(picturePopup);
+    deleteComments();
+    document.removeEventListener('keydown', closePreviewOnEscape)
+  }
+};
+
 let addComments = (array) => {
 
   addCommentsButton.addEventListener('click', () => {
@@ -128,12 +136,7 @@ let addPictures = (data) => {
         deleteComments();
       });
 
-      document.addEventListener('keydown', (evt) => {
-        if (evt.keyCode === ESCAPE) {
-          closePopup(picturePopup);
-          deleteComments();
-        }
-      })
+      document.addEventListener('keydown', closePreviewOnEscape)
     })
   })
 };

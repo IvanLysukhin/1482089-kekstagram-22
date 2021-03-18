@@ -31,7 +31,7 @@ let openErrorDataPopup = () => {
   setTimeout(() => {
     errorPopup.remove();
   }, ERROR_DELAY)
-}
+};
 
 let openMessage = (type) => {
   let mainContainer = document.querySelector('main');
@@ -44,17 +44,23 @@ let openMessage = (type) => {
     message.remove();
   });
 
-  mainContainer.addEventListener('click', (evt) => {
+  let closeMessageOnClick = (evt) => {
     if (evt.target === message) {
       message.remove();
+      mainContainer.removeEventListener('click', closeMessageOnClick)
     }
-  })
+  };
 
-  window.addEventListener('keydown', (evt) => {
+  mainContainer.addEventListener('click', closeMessageOnClick);
+
+  let closeMessageOnEscape = (evt) => {
     if (evt.keyCode === ESCAPE) {
       message.remove();
+      document.removeEventListener('keydown', closeMessageOnEscape)
     }
-  })
+  };
+
+  document.addEventListener('keydown', closeMessageOnEscape);
 
   mainContainer.appendChild(message);
 };
